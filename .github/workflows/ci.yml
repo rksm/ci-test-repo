@@ -1,0 +1,16 @@
+name: CI
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+defaults:
+    run:
+        shell: bash
+
+jobs:
+    test:
+            - uses: actions/checkout@v4
+            - run: env
+            - run: uname -a
+            - run: echo ${{ github.event_name }}
