@@ -1,9 +1,9 @@
 name: CI
 on:
-    push:
-        branches: [main]
+    # push:
+    #     branches: [main]
     pull_request:
-        branches: [main]
+        branches: ["**"]
 defaults:
     run:
         shell: bash
@@ -30,9 +30,14 @@ jobs:
                   });
 
                   console.log('waiting');
-                  await new Promise(resolve => setTimeout(resolve, 60000));
+                  await new Promise(resolve => setTimeout(resolve, 30000));
 
                   async function checkIfMerged(github, context) {
+                      console.log({
+                              issue_number: context.issue.number,
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                      });
                       try {
                           const response = await github.rest.pulls.checkIfMerged({
                               issue_number: context.issue.number,
