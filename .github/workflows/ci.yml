@@ -41,10 +41,7 @@ jobs:
                           return response.status === 204;
                       } catch (err) {
                           console.warn(`checkIfMerged eror: ${err.status ? err.status : err}`);
-                          // status if not merged
-                          if (err.status === 404) {
-                              return false;
-                          }
+                          return false;
                       }
                   }
 
