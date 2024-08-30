@@ -27,5 +27,26 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     body,
-                  })
+                  });
+
+                  async function checkIfMerged(github, context) {
+                      try {
+                          const response = await github.rest.pulls.checkIfMerged({
+                              issue_number: context.issue.number,
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                          });
+                          console.log('checkIfMerged -> headers', response);
+                          // status if merged
+                          return response.status === 204;
+                      } catch (err) {
+                          console.warn(`checkIfMerged eror: ${err.status ? err.status : err}`);
+                          // status if not merged
+                          if (err.status === 404) {
+                              return false;
+                          }
+                      }
+                  }
+
+                  console.log('checkIfMerged', checkIfMerged(github, context));
 
