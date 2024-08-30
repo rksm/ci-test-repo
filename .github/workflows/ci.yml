@@ -29,6 +29,9 @@ jobs:
                     body,
                   });
 
+                  console.log('waiting');
+                  await new Promise(resolve => setTimeout(resolve, 15000));
+
                   async function checkIfMerged(github, context) {
                       try {
                           const response = await github.rest.pulls.checkIfMerged({
@@ -36,14 +39,15 @@ jobs:
                               owner: context.repo.owner,
                               repo: context.repo.repo,
                           });
-                          console.log('checkIfMerged -> headers', response);
+                          console.log('checkIfMerged -> response', response);
                           // status if merged
                           return response.status === 204;
                       } catch (err) {
+                          console.log("got error", err);
                           console.warn(`checkIfMerged eror: ${err.status ? err.status : err}`);
                           return false;
                       }
                   }
 
-                  console.log('checkIfMerged', checkIfMerged(github, context));
+                  console.log('checkIfMerged', await checkIfMerged(github, context));
 
