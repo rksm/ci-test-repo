@@ -1,9 +1,9 @@
 name: CI
 on:
-    push:
-        branches: [main]
+    # push:
+    #     branches: [main]
     pull_request:
-        branches: [main]
+        branches: ["**"]
 defaults:
     run:
         shell: bash
@@ -29,19 +29,24 @@ jobs:
                     body,
                   });
 
-                  console.log('waiting');
-                  await new Promise(resolve => setTimeout(resolve, 60000));
+                  // console.log('waiting');
+                  // await new Promise(resolve => setTimeout(resolve, 30000));
 
                   async function checkIfMerged(github, context) {
+                      console.log({
+                              issue_number: context.issue.number,
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                      });
                       try {
-                          const response = await github.rest.pulls.checkIfMerged({
+                          const response = await github.rest.pulls.get({
                               issue_number: context.issue.number,
                               owner: context.repo.owner,
                               repo: context.repo.repo,
                           });
                           console.log('checkIfMerged -> response', response);
                           // status if merged
-                          return response.status === 204;
+                          // return response.status === 204;
                       } catch (err) {
                           console.log("got error", err);
                           console.warn(`checkIfMerged eror: ${err.status ? err.status : err}`);
