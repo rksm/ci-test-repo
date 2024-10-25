@@ -15,7 +15,7 @@ jobs:
     deploy-release:
         name: Deploy release
         runs-on: ubuntu-latest
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
         environment:
             name: FOOO
             url: https://foo.example.com
