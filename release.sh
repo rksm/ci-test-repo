@@ -2,6 +2,14 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# This script is used to trigger a new release of the project. It accepts two
+# arguments:
+# - the branch/tag/rev to release
+# - the branch to release to (default: release)
+#
+# The script will merge the branch/tag/rev into the release branch and push the
+# release branch to the remote.
+
 if [[ $# -eq 0 ]]; then
     echo "pass branch/tag/rev to release as argument, e.g. ./release.sh v1.0.5"
     exit 1
@@ -16,8 +24,6 @@ fi
 TARGET_REV=$1
 RELEASE_BRANCH=${2:-release}
 WAS_DETACHED=
-
-set -x
 
 # make sure stable branch points to origin
 git fetch origin
