@@ -24,5 +24,27 @@ git fetch origin
 git checkout $RELEASE_BRANCH || git checkout -b $RELEASE_BRANCH origin/$RELEASE_BRANCH
 git reset --hard origin/$RELEASE_BRANCH
 
-git merge --no-ff --allow-unrelated-histories -s theirs $TARGET_REV -m "Merge $TARGET_REV into $RELEASE_BRANCH"
+# merge the current branch into stable without conflict, i.e. we don't need to
+# force push but need to do some merge dance...
+git checkout $TARGET_REV
+
+git merge --no-ff --allow-unrelated-histories -s ours $RELEASE_BRANCH -m "new release"
+
+# are we in a detached state? in this case we need an extra tag to merge the
+# release branch
+if [[ ! $(git symbolic-ref -q HEAD) ]]; then
+    # back to the original branch and discard the merge commit
+    WAS_DETACHED=1
+    TARGET_REV="$TARGET_REV-$RELEASE_BRANCH"
+    git tag $TARGET_REV
+fi
+git checkout $RELEASE_BRANCH
+git merge $TARGET_REV
+
+# publish!
 # git push origin $RELEASE_BRANCH
+
+if [[ -n $WAS_DETACHED ]]; then
+    # delete the extra tag
+    git tag -d $TARGET_REV
+fi
