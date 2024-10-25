@@ -24,5 +24,5 @@ git fetch origin
 git checkout $RELEASE_BRANCH || git checkout -b $RELEASE_BRANCH origin/$RELEASE_BRANCH
 git reset --hard origin/$RELEASE_BRANCH
 
-git merge --no-ff --allow-unrelated-histories -s ours $TARGET_REV -m "Merge $TARGET_REV into $RELEASE_BRANCH"
+git merge --no-ff --allow-unrelated-histories -s theirs $TARGET_REV -m "Merge $TARGET_REV into $RELEASE_BRANCH"
 # git push origin $RELEASE_BRANCH
