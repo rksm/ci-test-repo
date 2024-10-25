@@ -17,6 +17,7 @@ jobs:
   commit-to-release:
     runs-on: ubuntu-latest
     steps:
-      - run: ./release.sh ${{ github.event.inputs.revision }} ${{ github.event.inputs.releaseBranch }}
+      - uses: actions/checkout@v4
+      - run: ./release.sh ${{ github.event.inputs.revision || 'main' }} ${{ github.event.inputs.releaseBranch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
