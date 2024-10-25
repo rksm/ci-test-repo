@@ -1,33 +1,22 @@
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
+      releaseBranch:
+        description: 'Release branch'
         required: true
-        default: 'warning'
+        default: 'release'
         type: choice
         options:
-        - info
-        - warning
-        - debug
-      tags:
-        description: 'Test scenario tags'
+        - release
+      revision:
+        description: 'Which git revision to promote as release? Defaults to main.'
         required: false
-        type: boolean
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: false
+        type: string
 
 jobs:
-  log-the-inputs:
+  commit-to-release:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo "Log level: $LEVEL"
-          echo "Tags: $TAGS"
-          echo "Environment: $ENVIRONMENT"
+      - run: ./release.sh ${{ github.event.inputs.revision }} ${{ github.event.inputs.releaseBranch }}
         env:
-          LEVEL: ${{ inputs.logLevel }}
-          TAGS: ${{ inputs.tags }}
-          ENVIRONMENT: ${{ inputs.environment }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
