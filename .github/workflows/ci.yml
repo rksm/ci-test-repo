@@ -60,4 +60,5 @@ jobs:
         environment:
             name: FOOO
             url: https://foo.example.com
-        steps: []
+        steps:
+            - run: "echo 'The kubernetes cluster watches this workflow'"
