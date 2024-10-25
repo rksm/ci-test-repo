@@ -42,7 +42,7 @@ git checkout $RELEASE_BRANCH
 git merge $TARGET_REV
 
 # publish!
-git push origin $RELEASE_BRANCH
+# git push origin $RELEASE_BRANCH
 
 if [[ -n $WAS_DETACHED ]]; then
     # delete the extra tag
