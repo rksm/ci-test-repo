@@ -17,6 +17,8 @@ TARGET_REV=$1
 RELEASE_BRANCH=${2:-release}
 WAS_DETACHED=
 
+set -x
+
 # make sure stable branch points to origin
 git fetch origin
 git checkout $RELEASE_BRANCH || git checkout -b $RELEASE_BRANCH origin/$RELEASE_BRANCH
